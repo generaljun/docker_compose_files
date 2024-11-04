@@ -42,6 +42,7 @@ services:
       service: openvino    
     volumes:
       - model-cache:/cache
+      - /dev/bus/usb:/dev/bus/usb
     env_file:
       - .env
     restart: always
@@ -51,8 +52,7 @@ services:
       - 'c 189:* rmw'
     devices:
       - /dev/dri:/dev/dri
-    volumes:
-      - /dev/bus/usb:/dev/bus/usb
+  
 
 
   redis:
