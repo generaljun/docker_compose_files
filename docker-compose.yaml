@@ -14,7 +14,15 @@ services:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     extends:
       file: hwaccel.transcoding.yml
-      service: vaapi
+      service: nvenc
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
     devices:
       - /dev/dri:/dev/dri
     volumes:
@@ -39,19 +47,26 @@ services:
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
     extends: 
       file: hwaccel.ml.yml
-      service: openvino    
+      service: cuda   
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
     volumes:
       - model-cache:/cache
       - /dev/bus/usb:/dev/bus/usb
     env_file:
       - .env
     restart: always
+    devices:
+      - /dev/dri:/dev/dri    
     healthcheck:
       disable: false
-    device_cgroup_rules:
-      - 'c 189:* rmw'
-    devices:
-      - /dev/dri:/dev/dri
+
   
 
 
