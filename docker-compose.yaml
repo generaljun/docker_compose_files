@@ -45,9 +45,9 @@ services:
     # For hardware acceleration, add one of -[armnn, cuda, openvino] to the image tag.
     # Example tag: ${IMMICH_VERSION:-release}-cuda
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
-    extends: 
+    extends:
       file: hwaccel.ml.yml
-      service: cuda   
+      service: cuda
     deploy:
       resources:
         reservations:
@@ -63,11 +63,10 @@ services:
       - .env
     restart: always
     devices:
-      - /dev/dri:/dev/dri    
+      - /dev/dri:/dev/dri
     healthcheck:
       disable: false
 
-  
 
 
   redis:
